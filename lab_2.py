@@ -5,16 +5,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 # Step-1: Configure the app and initialize the database
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///project.db"
-app.config['SECRET_KEY'] = '123'  # Needed for session management and flash messages
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///lab2.db"
+app.config['SECRET_KEY'] = 'mahmoud123' 
 db = SQLAlchemy(app)
 
-# Step-2: Define User Schema
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)  # Additional attribute to differentiate admin users
+    is_admin = db.Column(db.Boolean, default=False)
     books = db.relationship('Book', backref='owner', lazy="select")
 
     def __init__(self, username, password, is_admin=False):
@@ -55,7 +55,6 @@ def register():
     
     return render_template('register.html')
 
-# User Login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
